@@ -3,18 +3,9 @@ var router = express.Router();
 const app = express()
 const session = require("express-session")
 var bodyParser = require('body-parser');
-const { default: mongoose } = require("mongoose");
-
+const db = require("../config/connection")
 var jsonParser = bodyParser.json()
 
-mongoose.connect("mongodb://localhost:27017/mini-web-app",{
-    useNewUrlParser: true,
-    useUnifiedTopoLogy:true
-})
-
-var db = mongoose.connection
-db.on("error",()=>console.log("Error in connecting to database"))
-db.once("open",()=>console.log("connection to database"))
 
 // session code
 app.set('trust proxy', 1) // trust first proxy

@@ -5,6 +5,7 @@ const path = require("path")
 const hbs = require("hbs")
 const fs = require("fs")
 const userRouter = require("./routes/user")
+const adminRouter = require("./routes/admin")
 const { default: mongoose } = require("mongoose")
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -24,6 +25,7 @@ var db = mongoose.connection;
 
 
 app.use("/",userRouter)
+app.use("/admin",adminRouter)
 
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -35,3 +37,4 @@ app.use(express.static(path.join(__dirname, "public")));
 app.listen(PORT,()=>{
     console.log("port connected")
 })
+
