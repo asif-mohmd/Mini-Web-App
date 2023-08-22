@@ -18,6 +18,10 @@ router.get("/",(req,res)=>{
     res.render("user/index")
 })
 
+router.get("/home",(req,res)=>{
+    res.render("user/login")
+
+})
 
 
 module.exports = router
