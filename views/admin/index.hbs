@@ -31,27 +31,29 @@
                       <th scope="col" class="border-0 text-uppercase font-medium">Manage</th>
                     </tr>
                   </thead>
+
                   <tbody>
+                    {{#each data}}
                     <tr>
                       <td class="pl-4">1</td>
                       <td >
-                          <h5 class="font-medium mb-0 ">Daniel Kristeen</h5>
+                          <h5 class="font-medium mb-0 ">{{name}}</h5>
                        
                       </td>
              
                       <td>
-                          <span class="text-muted">daniel@website.com</span><br>     
+                          <span class="text-muted">{{email}}</span><br>     
                       </td>
                    
                    
                       <td>
 
-                        <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
-                        <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
+                        <a href="/admin/user-delete?id={{_id}}"><button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button></a>
+                        <a href="/admin/user-edit"><button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button></a>
                 
                       </td>
                     </tr>
-                 
+                 {{/each}}
                     
                   </tbody>
                 </table>

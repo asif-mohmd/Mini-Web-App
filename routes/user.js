@@ -4,6 +4,8 @@ const app = express()
 const session = require("express-session")
 var bodyParser = require('body-parser');
 const db = require("../config/connection")
+const adminModel = require("../model/adminModel");
+const userModel = require("../model/userModel");
 var jsonParser = bodyParser.json()
 
 
@@ -80,7 +82,8 @@ router.post("/signup",(req,res)=>{
     
 })
 
-router.get
+
+
 
 
 module.exports = router
