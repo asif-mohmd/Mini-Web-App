@@ -30,6 +30,15 @@ router.get("/",async(req,res)=>{
    }
   })
 
+  router.get("/login",(req,res)=>{
+    res.render("admin/login")
+  })
+
+  app.use("/", function (err, req, res, next) {
+    console.log(err)
+    res.render("admin/login")
+})
+
 
 
   router.get("/user-delete",async(req,res)=>{
@@ -52,7 +61,33 @@ router.get("/",async(req,res)=>{
 
   router.get("/user-edit",async(req,res)=>{
 
-    res.render("admin/signup")
+    const data = await userModel.findOne({_id:req.query.id})
+    res.render("admin/signup",{id:req.query.id,email:data.email,name:data.name})
 
   })
+
+  router.post("/updated-user",async(req,res)=>{
+    console.log("*****y",req.body)
+    const data = await userModel.findOne({_id:req.body.id})
+
+       if(data){
+        const updateData = await userModel.updateOne({_id:req.body.id},{name:req.body.name,email:req.body.email})
+        if(updateData) res.redirect('/admin')
+       }else{
+        console.log("not updated")
+       }
+
+  })
+
+
+  
+function checkLogin(req, res, next) {
+  if (req.session.user) {
+      next()
+  } else {
+      var err = new Error("user not logged in")
+      next(err)
+  }
+}
+
   module.exports = router

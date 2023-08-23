@@ -1,89 +1,85 @@
 var express = require("express");
 var router = express.Router();
-const app = express()
+
 const session = require("express-session")
 var bodyParser = require('body-parser');
 const db = require("../config/connection")
 const adminModel = require("../model/adminModel");
-const userModel = require("../model/userModel");
+const userModel = require("../model/userModel"); 
 var jsonParser = bodyParser.json()
-
+const app = express()
 
 // session code
 app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false }
-  }))
 
 
 
-router.get("/",(req,res)=>{
-    res.render("user/login")
+router.get("/", (req, res) => {
+    if(!req.session.user)  res.redirect("/login")
+    else res.render("user/index")
 })
 
-router.get("/index",(req,res)=>{
-    res.render("user/index")
 
+router.get("/login", (req, res) => {
+    if(!req.session.user)  res.render("user/login")
+    else res.redirect('/')
 })
 
-router.get("/login",(req,res)=>{
-    res.render("user/login")
-})
+router.post("/login", async (req, res) => {
+    const data = await userModel.findOne({ email: req.body.email, password: req.body.password })
 
-router.post("/login", (req,res)=>{
-    console.log(req.body.email)
-    
-    db.collection("users").findOne({email:req.body.email, password:req.body.password}, function(err,user)
-    {
-        console.log(user)
-        console.log("aaima here")
-        if(user) {
-        res.redirect("/index")
-        }else{
-           res.render("user/login")
-        }
-        
+    if (data) {
+        console.log("aaima here");
+        req.session.user = data;
+        return res.redirect("/"); // Redirect to the root URL
+    } else {
+        return res.render("user/login");
     }
-)});
+});
+
+app.get("/logout", (req, res) => {
+    req.session.destroy(function () {
+        console.log("user logged out")
+    })
+    res.redirect("/login")
+})
+
+app.use("/", function (err, req, res, next) {
+
+    console.log(err)
 
 
+})
 
-router.get("/signup",(req,res)=>{
+router.get("/signup", (req, res) => {
     res.render("user/signup")
 
 })
 
-router.post("/signup",(req,res)=>{
+router.post("/signup", (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    
+
     console.log(email)
     console.log(name)
     console.log(password)
 
     var data = {
-        "name" : name,
-        "email" : email,
+        "name": name,
+        "email": email,
         "password": password
     }
 
-    db.collection("users").insertOne(data,(err,collection)=>{
-        if(err){
+    db.collection("users").insertOne(data, (err, collection) => {
+        if (err) {
             throw err;
-        }else{
+        } else {
             console.log("recored inserted successfully")
             res.redirect("/")
         }
     })
-    
+
 })
-
-
-
-
 
 module.exports = router
