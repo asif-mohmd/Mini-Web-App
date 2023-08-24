@@ -20,24 +20,35 @@ app.use(session({
 
 
 router.get("/", async (req, res) => {
-
-  const data = await userModel.find()
-  console.log(data)
-  if (data) {
+  if (!req.session.user) {
+    res.redirect("admin/login")
+}
+  else {
+  
+    const data = await userModel.find()
+    console.log(data)
     res.render("admin/index", { data })
 
-  } else {
   }
 })
 
 router.get("/login", (req, res) => {
-  res.render("admin/login")
+  if (!req.session.user) res.render("admin/login")
+  else res.redirect('admin/index')
+
 })
 
-app.use("/", function (err, req, res, next) {
-  console.log(err)
-  res.render("admin/login")
-})
+router.post("/login", async (req, res) => {
+
+  const data = await adminModel.findOne({ email: req.body.email, password: req.body.password })
+   
+  if (data) {
+      req.session.user = data;
+      return res.redirect("/admin"); // Redirect to the root URL
+  } else {
+      return res.render("admin/login");
+  }
+});
 
 
 
@@ -62,12 +73,12 @@ router.get("/user-delete", async (req, res) => {
 router.get("/user-edit", async (req, res) => {
 
   const data = await userModel.findOne({ _id: req.query.id })
-  res.render("admin/signup", { id: req.query.id, email: data.email, name: data.name })
+  res.render("admin/update-user", { id: req.query.id, email: data.email, name: data.name })
 
 })
 
 router.post("/updated-user", async (req, res) => {
-  console.log("*****y", req.body)
+
   const data = await userModel.findOne({ _id: req.body.id })
 
   if (data) {
@@ -80,14 +91,33 @@ router.post("/updated-user", async (req, res) => {
 })
 
 
+// router.get("/signup", (req, res) => {
+//   res.render("user/signup")
 
-function checkLogin(req, res, next) {
-  if (req.session.user) {
-    next()
-  } else {
-    var err = new Error("user not logged in")
-    next(err)
-  }
-}
+// })
+
+// router.post("/signup", async (req, res) => {
+//   const name = req.body.name;
+//   const email = req.body.email;
+//   const password = req.body.password;
+
+//   var data = {
+//       "name": name,
+//       "email": email,
+//       "password": password
+//   }
+
+//   const data2 = await userModel.create(data)
+
+//   if (data2) {
+//       console.log("recored inserted successfully")
+//       res.redirect("/")
+//   } else {
+//       throw err;
+//   }
+
+// })
+
+
 
 module.exports = router
