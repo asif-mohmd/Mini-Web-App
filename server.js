@@ -1,5 +1,4 @@
 const express = require("express")
-
 const app = express()
 const path = require("path")
 const hbs = require("hbs")
@@ -26,24 +25,16 @@ app.set("view engine", "hbs")
 app.set("views", path.join(__dirname, "./views"))
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 mongoose.connect("mongodb://localhost:27017/mini-web-app")
 
 var db = mongoose.connection;
 
-
-
-app.use("/",userRouter)
-app.use("/admin",adminRouter)
-
-
-
+app.use("/", userRouter)
+app.use("/admin", adminRouter)
 
 // req.body convertion with this module otherwise undefined
 
-
-
-app.listen(PORT,()=>{
+app.listen(PORT, () => {
     console.log("port connected")
 })
 

@@ -22,9 +22,9 @@ app.use(session({
 router.get("/", async (req, res) => {
   if (!req.session.user) {
     res.redirect("admin/login")
-}
+  }
   else {
-  
+
     const data = await userModel.find()
     console.log(data)
     res.render("admin/index", { data })
@@ -41,12 +41,12 @@ router.get("/login", (req, res) => {
 router.post("/login", async (req, res) => {
 
   const data = await adminModel.findOne({ email: req.body.email, password: req.body.password })
-   
+
   if (data) {
-      req.session.user = data;
-      return res.redirect("/admin"); // Redirect to the root URL
+    req.session.user = data;
+    return res.redirect("/admin"); // Redirect to the root URL
   } else {
-      return res.render("admin/login");
+    return res.render("admin/login");
   }
 });
 
@@ -54,7 +54,6 @@ router.post("/login", async (req, res) => {
 
 router.get("/user-delete", async (req, res) => {
   console.log(req.query.id)
-
 
   const data = await userModel.deleteOne({ _id: req.query.id })
   const updatedData = await userModel.find()
@@ -91,15 +90,15 @@ router.post("/updated-user", async (req, res) => {
 })
 
 
-router.post("/search", async(req,res)=>{
-  const user  = await userModel.findOne({name:req.body.name})
+router.post("/search", async (req, res) => {
+  const user = await userModel.findOne({ name: req.body.name })
 
-  if(user){
-    console.log("user found",user)
+  if (user) {
+    console.log("user found", user)
 
-    res.render("admin/index",{searchUser:user})
-  }else{
- 
+    res.render("admin/index", { searchUser: user })
+  } else {
+
     console.log("user not found")
   }
 })
