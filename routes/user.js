@@ -5,7 +5,7 @@ const session = require("express-session")
 var bodyParser = require('body-parser');
 const db = require("../config/connection")
 const adminModel = require("../model/adminModel");
-const userModel = require("../model/userModel"); 
+const userModel = require("../model/userModel");
 var jsonParser = bodyParser.json()
 const app = express()
 
@@ -15,13 +15,13 @@ app.set('trust proxy', 1) // trust first proxy
 
 
 router.get("/", (req, res) => {
-    if(!req.session.user)  res.redirect("/login")
+    if (!req.session.user) res.redirect("/login")
     else res.render("user/index")
 })
 
 
 router.get("/login", (req, res) => {
-    if(!req.session.user)  res.render("user/login")
+    if (!req.session.user) res.render("user/login")
     else res.redirect('/')
 })
 
@@ -56,7 +56,7 @@ router.get("/signup", (req, res) => {
 
 })
 
-router.post("/signup", (req, res) => {
+router.post("/signup", async (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
@@ -71,15 +71,14 @@ router.post("/signup", (req, res) => {
         "password": password
     }
 
-    db.collection("users").insertOne(data, (err, collection) => {
-        if (err) {
-            throw err;
-        } else {
-            console.log("recored inserted successfully")
-            res.redirect("/")
-        }
-    })
+    const data2 = await userModel.create(data)
+
+    if (data2) {
+        console.log("recored inserted successfully")
+        res.redirect("/")
+    } else {
+        throw err;
+    }
 
 })
-
 module.exports = router

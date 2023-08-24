@@ -9,5 +9,3 @@ mongoose.connect("mongodb://localhost:27017/mini-web-app",{
 var db = mongoose.connection
 db.on("error",()=>console.log("Error in connecting to database"))
 db.once("open",()=>console.log("connection to database"))
-
-module.exports = db
