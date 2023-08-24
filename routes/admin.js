@@ -91,33 +91,18 @@ router.post("/updated-user", async (req, res) => {
 })
 
 
-// router.get("/signup", (req, res) => {
-//   res.render("user/signup")
+router.post("/search", async(req,res)=>{
+  const user  = await userModel.findOne({name:req.body.name})
 
-// })
+  if(user){
+    console.log("user found",user)
 
-// router.post("/signup", async (req, res) => {
-//   const name = req.body.name;
-//   const email = req.body.email;
-//   const password = req.body.password;
-
-//   var data = {
-//       "name": name,
-//       "email": email,
-//       "password": password
-//   }
-
-//   const data2 = await userModel.create(data)
-
-//   if (data2) {
-//       console.log("recored inserted successfully")
-//       res.redirect("/")
-//   } else {
-//       throw err;
-//   }
-
-// })
-
+    res.render("admin/index",{searchUser:user})
+  }else{
+ 
+    console.log("user not found")
+  }
+})
 
 
 module.exports = router
