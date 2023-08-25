@@ -31,7 +31,8 @@ router.post("/login", async (req, res) => {
         req.session.user = data;
         return res.redirect("/"); // Redirect to the root URL
     } else {
-        return res.render("user/login");
+        err = "Enter valid credentials"
+        return res.render("user/login",{err:err});
     }
 });
 
