@@ -6,6 +6,11 @@ var bodyParser = require('body-parser');
 const db = require("../config/connection")
 const adminModel = require("../model/adminModel");
 const userModel = require("../model/userModel");
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const yourPassword = "someRandomPasswordHere";
+
 var jsonParser = bodyParser.json()
 const app = express()
 
@@ -25,15 +30,24 @@ router.get("/login", (req, res) => {
 })
 
 router.post("/login", async (req, res) => {
-    const data = await userModel.findOne({ email: req.body.email, password: req.body.password })
 
-    if (data) {
-        req.session.user = data;
-        return res.redirect("/"); // Redirect to the root URL
-    } else {
-        err = "Enter valid credentials"
-        return res.render("user/login",{err:err});
-    }
+
+
+    const user = await userModel.findOne({ email: req.body.email})
+console.log(user)
+    if (user) {
+        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+      const data =  bcrypt.compare(req.body.password,user.password)
+            if(data){
+            req.session.user = data;
+            return res.redirect("/"); // Redirect to the root URL
+        }else {
+            err = "Enter valid credentials"
+            return res.render("user/login",{err:err});
+        }
+    
+       
+    } 
 });
 
 router.get("/logout", (req, res) => {
@@ -58,6 +72,10 @@ router.post("/signup", async (req, res) => {
         "email": email,
         "password": password
     }
+
+    data.password = await bcrypt.hash(data.password, saltRounds);
+
+  console.log(data.password);
 
     const data2 = await userModel.create(data)
 

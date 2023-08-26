@@ -7,6 +7,7 @@ const userRouter = require("./routes/user")
 const adminRouter = require("./routes/admin")
 const { default: mongoose } = require("mongoose")
 const session = require("express-session")
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
