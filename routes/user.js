@@ -33,21 +33,21 @@ router.post("/login", async (req, res) => {
 
 
 
-    const user = await userModel.findOne({ email: req.body.email})
+    const user = await userModel.findOne({ email: req.body.email })
 
     if (user) {
-     
-      const data =  bcrypt.compare(req.body.password,user.password)
-            if(data){
+
+        const data = bcrypt.compare(req.body.password, user.password)
+        if (data) {
             req.session.user = data;
             return res.redirect("/"); // Redirect to the root URL
-        }else {
+        } else {
             err = "Enter valid credentials"
-            return res.render("user/login",{err:err});
+            return res.render("user/login", { err: err });
         }
-    
-       
-    } 
+
+
+    }
 });
 
 router.get("/logout", (req, res) => {
@@ -75,7 +75,7 @@ router.post("/signup", async (req, res) => {
 
     data.password = await bcrypt.hash(data.password, saltRounds);
 
-  console.log(data.password);
+    console.log(data.password);
 
     const data2 = await userModel.create(data)
 
