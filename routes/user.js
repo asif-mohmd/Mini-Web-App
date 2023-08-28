@@ -31,12 +31,9 @@ router.get("/login", (req, res) => {
 
 router.post("/login", async (req, res) => {
 
-
-
     const user = await userModel.findOne({ email: req.body.email })
 
     if (user) {
-
         const data = bcrypt.compare(req.body.password, user.password)
         if (data) {
             req.session.user = data;
@@ -45,8 +42,6 @@ router.post("/login", async (req, res) => {
             err = "Enter valid credentials"
             return res.render("user/login", { err: err });
         }
-
-
     }
 });
 
@@ -87,4 +82,5 @@ router.post("/signup", async (req, res) => {
     }
 
 })
+
 module.exports = router

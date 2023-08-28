@@ -9,6 +9,7 @@ const userModel = require("../model/userModel");
 var jsonParser = bodyParser.json()
 
 app.use(bodyParser.urlencoded({ extended: false }));
+
 // session code
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
@@ -17,7 +18,6 @@ app.use(session({
   saveUninitialized: false,
   cookie: { secure: false }
 }))
-
 
 router.get("/", async (req, res) => {
   if (!req.session.user) {
@@ -49,8 +49,6 @@ router.post("/login", async (req, res) => {
     return res.render("admin/login");
   }
 });
-
-
 
 router.get("/user-delete", async (req, res) => {
   console.log(req.query.id)
@@ -86,9 +84,7 @@ router.post("/updated-user", async (req, res) => {
   } else {
     console.log("not updated")
   }
-
 })
-
 
 router.post("/search", async (req, res) => {
   const user = await userModel.findOne({ name: req.body.name })
