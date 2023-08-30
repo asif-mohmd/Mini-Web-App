@@ -62,8 +62,6 @@ router.get("/user-delete", async (req, res) => {
   } else {
     console.log("not deleted")
   }
-
-
 })
 
 
