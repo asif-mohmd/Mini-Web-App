@@ -8,7 +8,9 @@ const adminModel = require("../model/adminModel");
 const userModel = require("../model/userModel");
 var jsonParser = bodyParser.json()
 
+
 app.use(bodyParser.urlencoded({ extended: false }));
+
 
 // session code
 app.set('trust proxy', 1) // trust first proxy
@@ -20,6 +22,7 @@ app.use(session({
 }))
 
 router.get("/", async (req, res) => {
+  
   if (!req.session.user) {
     res.redirect("admin/login")
   }
@@ -33,6 +36,7 @@ router.get("/", async (req, res) => {
 })
 
 router.get("/login", (req, res) => {
+
   if (!req.session.user) res.render("admin/login")
   else res.redirect('admin/index')
 
@@ -54,6 +58,7 @@ router.get("/user-delete", async (req, res) => {
   console.log(req.query.id)
 
   const data = await userModel.deleteOne({ _id: req.query.id })
+
   const updatedData = await userModel.find()
 
   if (data) {
@@ -68,6 +73,7 @@ router.get("/user-delete", async (req, res) => {
 router.get("/user-edit", async (req, res) => {
 
   const data = await userModel.findOne({ _id: req.query.id })
+
   res.render("admin/update-user", { id: req.query.id, email: data.email, name: data.name })
 
 })
@@ -85,6 +91,7 @@ router.post("/updated-user", async (req, res) => {
 })
 
 router.post("/search", async (req, res) => {
+
   const user = await userModel.findOne({ name: req.body.name })
 
   if (user) {
