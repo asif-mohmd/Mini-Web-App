@@ -27,6 +27,7 @@
               </form>
             </div>
           </div>
+          
           <div class="table-responsive">
             <table class="table no-wrap user-table mb-0 text-center">
               <thead>
@@ -39,13 +40,13 @@
               </thead>
 
               <tbody>
+
                 {{#if searchUser}}
 
                 <tr>
                   <td class="pl-4">1</td>
                   <td>
                     <h5 class="font-medium mb-0 ">{{searchUser.name}}</h5>
-
                   </td>
 
                   <td>
@@ -62,8 +63,10 @@
 
                   </td>
                 </tr>
+
                 {{else}}
                 {{#each data}}
+
                 <tr>
                   <td class="pl-4">1</td>
                   <td>
@@ -74,8 +77,6 @@
                   <td>
                     <span class="text-muted">{{email}}</span><br>
                   </td>
-
-
                   <td>
 
                     <a href="/admin/user-delete?id={{_id}}"><button type="button"
@@ -84,11 +85,11 @@
                     <a href="/admin/user-edit?id={{_id}}"><button type="button"
                         class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i>
                       </button></a>
-
                   </td>
                 </tr>
                 {{/each}}
                 {{/if}}
+
               </tbody>
             </table>
           </div>
