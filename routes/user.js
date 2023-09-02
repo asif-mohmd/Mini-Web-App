@@ -16,12 +16,10 @@ const app = express()
 // session code
 app.set('trust proxy', 1) // trust first proxy
 
-
 router.get("/", (req, res) => {
     if (!req.session.user) res.redirect("/login")
     else res.render("user/index")
 })
-
 
 router.get("/login", (req, res) => {
     if (!req.session.user) res.render("user/login")
