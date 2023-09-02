@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 const db = require("../config/connection")
 const adminModel = require("../model/adminModel");
 const userModel = require("../model/userModel");
-
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const yourPassword = "someRandomPasswordHere";
